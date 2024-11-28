@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 var app = express();
+const { MongoClient } = require("mongodb");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -71,17 +72,44 @@ app.get('/wanttogo',function(req,res){
   res.render('wanttogo')
 });
 
-var MongoClient = require('mongodb').MongoClient;
+const mongoUrl = "mongodb://127.0.0.1:27017";
+const dbName = "TravelSystemDB";
 
-MongoClient.connect("mongodb://127.0.0.1:27017", function(err,client){
-  
-})
-app.post('/register',function(req,res){
-  var x = req.body.username;
-  var y = req.body.password;
-  console.log(x);
-  console.log(y);
-})
+// POST route for handling registration
+app.post('/register', async function (req, res) {
+  const { username, password } = req.body;
+
+  // Check if username or password is missing
+  if (!username || !password) {
+      return res.render('registration', { messageGiven: "Please fill in both fields." });
+  }
+
+  var MongoClient = require('mongodb').MongoClient;
+
+  try {
+      MongoClient.connect("mongodb://127.0.0.1:27017", async function (err, client) {
+          if (err) throw err;
+          var db = client.db('TravelSystemDB');
+
+          // Check if the username already exists
+          const existingUser = await db.collection('users').findOne({ username: username });
+
+          if (existingUser) {
+              return res.render('registration', { messageGiven: "Username already taken. Please choose another." });
+          }
+
+          // Insert the new user into the database
+          await db.collection('users').insertOne({ username: username, password: password });
+
+          return res.render('registration', { messageGiven: "Registration successful! Please log in." });
+      });
+  } catch (error) {
+      console.error("Error during registration:", error);
+      return res.render('registration', { messageGiven: "An error occurred. Please try again." });
+  }
+});
+
+
 
 app.post('/',function(req,res){
   var x = req.body.username;
