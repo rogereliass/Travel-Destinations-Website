@@ -70,5 +70,25 @@ app.get('/searchresults',function(req,res){
 app.get('/wanttogo',function(req,res){
   res.render('wanttogo')
 });
+
+var MongoClient = require('mongodb').MongoClient;
+
+MongoClient.connect("mongodb://127.0.0.1:27017", function(err,client){
+  
+})
+app.post('/register',function(req,res){
+  var x = req.body.username;
+  var y = req.body.password;
+  console.log(x);
+  console.log(y);
+})
+
+app.post('/',function(req,res){
+  var x = req.body.username;
+  var y = req.body.password;
+  console.log(x);
+  console.log(y);
+})
+
 //-----------------------------------------------------------------------------
 app.listen(3000);
