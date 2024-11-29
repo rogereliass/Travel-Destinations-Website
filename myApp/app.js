@@ -119,4 +119,20 @@ app.post('/',function(req,res){
 })
 
 //-----------------------------------------------------------------------------
+app.post('/search', function(req, res) {
+
+  const searchValue = req.body.Search;
+
+  const destinations = ['Inca Trail to Machu Picchu', 'Annapurna Circuit', 'Paris', 'Rome', 'Bali Island', 'Santorini Island', 'Cities', 'Hiking', 'Islands' ];
+
+  let results ="";
+  for(let i = 0; i < destinations.length; i++) {
+    if(destinations[i].includes(searchValue)){
+      results = results + destinations[i] + ' - ';
+    }
+  }
+
+  res.render('searchresults', { searchQuery: results });
+
+});
 app.listen(3000);

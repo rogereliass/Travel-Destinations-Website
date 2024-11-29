@@ -13,6 +13,15 @@
             text-align: center;
             -webkit-text-stroke: 1px blue;
         }
+        .searchresultscontainer {
+            max-width: 800px;
+            margin: 50px auto; /* Adds space from the navbar */
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            text-align: center; /* Centers the content inside */
+            font-size: 18px;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,5 +47,9 @@
             </form>
         </div>
     </nav>
+    <!-- Lower Section to Display the Search Query -->
+    <div class="searchresultscontainer">
+        <p><strong><%= searchQuery %></strong></p>
+    </div>
 </body>
 </html>
