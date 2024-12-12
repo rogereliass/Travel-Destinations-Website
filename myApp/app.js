@@ -5,7 +5,7 @@ var fs = require('fs');
 var app = express();
 const { MongoClient } = require("mongodb");
 
-// view engine setup
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -16,12 +16,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //-----------------------------------------------------------------------------
 //YOU CAN EDIT BELOW THIS LINE
-app.get('/',function(req,res){
-  res.render('login')
+app.get('/', (req, res) => {
+  const messageGiven = req.query.messageGiven || null; 
+  res.render('login', { message: messageGiven }); 
 });
 
 app.get('/registration',function(req,res){
-  res.render('registration')
+  res.render('registration', { messageGiven: null });
 });
 
 app.get('/home',function(req,res){
@@ -76,47 +77,69 @@ const mongoUrl = "mongodb://127.0.0.1:27017";
 const dbName = "TravelSystemDB";
 
 // POST route for handling registration
-app.post('/register', async function (req, res) {
+app.post('/register', async function (req, res) { 
   const { username, password } = req.body;
 
   // Check if username or password is missing
-  if (!username || !password) {
-      return res.render('registration', { messageGiven: "Please fill in both fields." });
+  if (!username || !username.trim() || !password || !password.trim()) {
+    return res.render('registration', { messageGiven: "Please fill in both fields." });
   }
 
-  var MongoClient = require('mongodb').MongoClient;
+  const MongoClient = require('mongodb').MongoClient;
+  const mongoUrl = "mongodb://127.0.0.1:27017";
 
   try {
-      MongoClient.connect("mongodb://127.0.0.1:27017", async function (err, client) {
-          if (err) throw err;
-          var db = client.db('TravelSystemDB');
+      const client = await MongoClient.connect(mongoUrl, { useUnifiedTopology: true });
+      const db = client.db('TravelSystemDB');
+      
+      // Check if the username already exists
+      const existingUser = await db.collection('users').findOne({ username: username });
 
-          // Check if the username already exists
-          const existingUser = await db.collection('users').findOne({ username: username });
+      if (existingUser) {
+          await client.close();
+          return res.render('registration', { messageGiven: "Username already taken. Please choose another." });
+      }
 
-          if (existingUser) {
-              return res.render('registration', { messageGiven: "Username already taken. Please choose another." });
-          }
+      // Insert the new user into the database
+      await db.collection('users').insertOne({ username: username, password: password });
+      
+      await client.close();
 
-          // Insert the new user into the database
-          await db.collection('users').insertOne({ username: username, password: password });
-
-          return res.render('registration', { messageGiven: "Registration successful! Please log in." });
-      });
+      // Redirect to the login page with a success message
+      return res.redirect('/?messageGiven=Registration successful! Please log in.');
   } catch (error) {
       console.error("Error during registration:", error);
       return res.render('registration', { messageGiven: "An error occurred. Please try again." });
   }
 });
 
+//POST route for handling login
+app.post('/login', async function (req, res) {
+    const { username, password } = req.body;
 
+    if (!username || !username.trim() || !password || !password.trim()) {
+        return res.render('login', { message: "Please fill in both fields." });
+    }
 
-app.post('/',function(req,res){
-  var x = req.body.username;
-  var y = req.body.password;
-  console.log(x);
-  console.log(y);
-})
+    try {
+        const client = await MongoClient.connect(mongoUrl, { useUnifiedTopology: true });
+        const db = client.db('TravelSystemDB');
+
+        const user = await db.collection('users').findOne({ username: username.trim() });
+
+        if (!user || user.password !== password) {
+            await client.close();
+            return res.render('login', { message: "Invalid username or password." });
+        }
+
+        await client.close();
+        return res.redirect('/home'); 
+    } catch (error) {
+        console.error("Error during login:", error);
+        return res.render('login', { message: "An error occurred. Please try again later." });
+    }
+});
+
 
 //-----------------------------------------------------------------------------
 app.post('/search', function(req, res) {
@@ -135,4 +158,7 @@ app.post('/search', function(req, res) {
   res.render('searchresults', { searchQuery: results });
 
 });
+
+
+
 app.listen(3000);
