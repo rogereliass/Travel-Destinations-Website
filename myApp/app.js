@@ -140,6 +140,13 @@ app.post('/login', async function (req, res) {
     return res.render('login', { message: "Please fill in both fields." });
   }
 
+  // TODO: Remove hardcoded credentials at the end
+  if (username === 'm' && password === '123') {
+    req.session.isLoggedIn = true; 
+    req.session.username = username; 
+    return res.redirect('/home'); 
+  }
+
   try {
     const client = await MongoClient.connect(mongoUrl, { useUnifiedTopology: true });
     const db = client.db('TravelSystemDB');
