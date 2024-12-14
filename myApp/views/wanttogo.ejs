@@ -13,6 +13,34 @@
             text-align: center;
             -webkit-text-stroke: 1px blue;
         }
+
+        .destinations-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            text-align: center; 
+            font-size: 18px;
+        }
+
+        .destination-button {
+            display: block; 
+            width: 100%; 
+            padding: 10px;
+            text-align: center;
+        }
+
+        .destination-button:hover {
+            background-color: #cdcdcd;
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,5 +66,27 @@
             </form>
         </div>
     </nav>
+
+    <div class="destinations-container">
+        <h3>Your Want-to-Go List:</h3>
+
+        <% if (error) { %>
+            <div class="error-message">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <% if (destinations.length > 0) { %>
+            <% destinations.forEach(function(destination) { %>
+                <form action="/destination" method="get" style="margin-bottom: 10px;">
+                    <button type="submit" class="destination-button" name="destination" value="<%= destination %>">
+                        <%= destination %>
+                    </button>
+                </form>
+            <% }); %>
+        <% } else { %>
+            <p>No destinations found in your want-to-go list.</p>
+        <% } %>
+    </div>
 </body>
 </html>

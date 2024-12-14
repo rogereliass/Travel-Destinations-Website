@@ -77,7 +77,10 @@
         Also known as the Land of the Gods, Bali appeals through its sheer natural beauty of looming volcanoes and lush terraced rice fields that exude peace and serenity. It is also famous for surfers' paradise.
     </div>
     <div class="wanttogo">
-        <button id="wanttogo" class="btn btn-secondary ml-3">Add to Want-to-Go List</button>
+        <form action="/addToWantToGo" method="post">
+            <input type="hidden" name="destination" value="<%= destination %>">
+            <button id="wanttogo" class="btn btn-secondary ml-3" type="submit">Add to Want-to-Go List</button>
+        </form>
     </div>
     <div class="video">
         <iframe width="480" height="360" src="https://www.youtube.com/embed/BFS9n4B_2xA?autoplay=1&mute=1&si=N4p8D-4F6vr24xEi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

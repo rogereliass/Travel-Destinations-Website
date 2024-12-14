@@ -15,11 +15,11 @@
         }
         .searchresultscontainer {
             max-width: 800px;
-            margin: 50px auto; /* Adds space from the navbar */
+            margin: 50px auto;
             padding: 20px;
             border: 1px solid #ccc;
             background-color: #f9f9f9;
-            text-align: center; /* Centers the content inside */
+            text-align: center; 
             font-size: 18px;
         }
     </style>
@@ -47,9 +47,22 @@
             </form>
         </div>
     </nav>
-    <!-- Lower Section to Display the Search Query -->
     <div class="searchresultscontainer">
-        <p><strong><%= searchQuery %></strong></p>
+        <h3>Search Results:</h3>
+        <% if (searchQuery.length > 0) { %>
+            <% searchQuery.forEach(function(destination) { %>
+                <form action="/destination" method="post" style="margin-bottom: 10px;">
+                    <button type="submit" style="display: block; width: 100%; padding: 10px;" 
+                            name="selectedDestination" value="<%= destination %>">
+                        <%= destination %>
+                    </button>
+                </form>
+            <% }); %>
+        <% } else { %>
+            <p>No destinations found. Please try a different search.</p>
+        <% } %>
     </div>
+    
+    
 </body>
 </html>
