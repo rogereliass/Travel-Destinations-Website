@@ -41,6 +41,27 @@
             text-align: center;
             margin-top: 20px;
         }
+        
+        .home-button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-button {
+            background-color: #2e8b57;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .home-button:hover {
+            background-color: #276645;
+            color: white;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,6 +108,11 @@
         <% } else { %>
             <p>No destinations found in your want-to-go list.</p>
         <% } %>
+    </div>
+
+    <!-- Home Button -->
+    <div class="home-button-container">
+        <a href="/home" class="home-button">Go to Home</a>
     </div>
 </body>
 </html>

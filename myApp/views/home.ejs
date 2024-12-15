@@ -42,6 +42,28 @@
             left: 80px;
             top: 370px;
         }
+        
+        .home-button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-button {
+            background-color: #b60f20;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .home-button:hover {
+            background-color: #980b19;
+            color: white;
+        }
+
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,7 +118,12 @@
         </div>
         <div class="wanttogo">
             <button onclick="location.href = '/wanttogo';" id="wanttogo" class="btn btn-secondary ml-3" style="width: 300px;">Want-to-Go List</button>
+            <!-- Logout Button -->
+            <div class="home-button-container">
+                <a href="/logout" class="home-button">Logout</a>
+            </div>
         </div>
+        
     </div>
 </body>
 </html>

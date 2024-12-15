@@ -44,6 +44,29 @@
         #my {
             zoom: 110%;
         }
+        
+        .home-button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-button {
+            background-color: #2e8b57;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .home-button:hover {
+            background-color: #276645;
+            color: white;
+        }
+
+
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,6 +103,10 @@
             <input type="hidden" name="destination" value="<%= destination %>">
             <button id="wanttogo" class="btn btn-secondary ml-3" type="submit">Add to Want-to-Go List</button>
         </form>
+        <!-- Home Button -->
+        <div class="home-button-container">
+            <a href="/home" class="home-button">Go to Home</a>
+        </div>
     </div>
     <div class="video">
         <iframe width="480" height="360" src="https://www.youtube.com/embed/nIzcnoyhzSQ?autoplay=1&mute=1&si=ldtyLi35yrudofGp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
